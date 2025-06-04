@@ -1,0 +1,65 @@
+{% extends 'admin/master.html' %}
+
+{% block head_css %}
+    {{ super() }}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="admin-dashboard container mt-4">
+        {% if current_user.is_authenticated and current_user.is_admin %}
+            <div class="admin-header mb-4 p-4 bg-light rounded">
+                <h1><i class="bi bi-shield-lock"></i> Tech Hub Administration</h1>
+                <p class="lead">Welcome, {{ current_user.username }}!</p>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="bi bi-people"></i> User Management</h5>
+                            <p class="display-5">{{ user_count }} registered users</p>
+                            <a href="{{ url_for('user.index_view') }}" class="btn btn-primary">
+                                <i class="bi bi-list"></i> View All Users
+                            </a>
+                            <a href="{{ url_for('user.create_view') }}" class="btn btn-success">
+                                <i class="bi bi-plus-circle"></i> Add New User
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="bi bi-clipboard-check"></i> Job Management</h5>
+                            <p class="display-5">{{ job_count }} service jobs</p>
+                            <a href="{{ url_for('job.index_view') }}" class="btn btn-primary">
+                                <i class="bi bi-list"></i> View All Jobs
+                            </a>
+                            <a href="{{ url_for('job.create_view') }}" class="btn btn-success">
+                                <i class="bi bi-plus-circle"></i> Create New Job
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-quick-links mt-4">
+                <a href="{{ url_for('main.dashboard') }}" class="btn btn-outline-secondary">
+                    <i class="bi bi-speedometer2"></i> Back to Main Dashboard
+                </a>
+            </div>
+        {% else %}
+            <div class="alert alert-danger">
+                <h4><i class="bi bi-exclamation-triangle"></i> Access Denied</h4>
+                <p>You must be an administrator to access this page.</p>
+                <a href="{{ url_for('auth.login') }}" class="btn btn-primary">
+                    <i class="bi bi-box-arrow-in-right"></i> Login
+                </a>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

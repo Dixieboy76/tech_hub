@@ -1,0 +1,308 @@
+{% extends "base.html" %}
+
+{% block title %}Job List{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Page Header with Stats -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-2">Your Service Jobs</h1>
+            <p class="mb-0 text-muted">
+                <i class="bi bi-info-circle"></i> Showing {{ jobs|length }} active jobs
+            </p>
+        </div>
+        <div>
+            <a href="{{ url_for('main.create_job') }}" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> New Job
+            </a>
+            <button class="btn btn-outline-secondary ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#filtersCollapse">
+                <i class="bi bi-funnel"></i> Filters
+            </button>
+        </div>
+    </div>
+
+    <!-- Filters Section -->
+    <div class="collapse mb-4" id="filtersCollapse">
+        <div class="card card-body">
+            <form class="row g-3">
+                <div class="col-md-3">
+                    <label for="statusFilter" class="form-label">Status</label>
+                    <select class="form-select" id="statusFilter">
+                        <option selected>All Statuses</option>
+                        <option>Pending</option>
+                        <option>In Progress</option>
+                        <option>Completed</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="dateFilter" class="form-label">Date Range</label>
+                    <select class="form-select" id="dateFilter">
+                        <option selected>All Time</option>
+                        <option>Today</option>
+                        <option>This Week</option>
+                        <option>This Month</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="searchFilter" class="form-label">Search</label>
+                    <input type="text" class="form-control" id="searchFilter" placeholder="Search jobs...">
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-filter"></i> Apply
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card border-start border-primary border-3">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6 class="text-uppercase text-muted small">Total Jobs</h6>
+                            <h2 class="mb-0">{{ jobs|length }}</h2>
+                        </div>
+                        <div class="icon-circle bg-primary-light text-primary">
+                            <i class="bi bi-clipboard-data"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-start border-warning border-3">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6 class="text-uppercase text-muted small">Pending</h6>
+                            <h2 class="mb-0">{{ jobs|selectattr('status', 'equalto', 'Pending')|list|length }}</h2>
+                        </div>
+                        <div class="icon-circle bg-warning-light text-warning">
+                            <i class="bi bi-hourglass-split"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-start border-info border-3">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6 class="text-uppercase text-muted small">In Progress</h6>
+                            <h2 class="mb-0">{{ jobs|selectattr('status', 'equalto', 'In Progress')|list|length }}</h2>
+                        </div>
+                        <div class="icon-circle bg-info-light text-info">
+                            <i class="bi bi-gear"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-start border-success border-3">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6 class="text-uppercase text-muted small">Completed</h6>
+                            <h2 class="mb-0">{{ jobs|selectattr('status', 'equalto', 'Completed')|list|length }}</h2>
+                        </div>
+                        <div class="icon-circle bg-success-light text-success">
+                            <i class="bi bi-check-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Toggle -->
+    <div class="d-flex justify-content-end mb-3">
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-outline-secondary active" id="cardViewBtn">
+                <i class="bi bi-grid"></i> Cards
+            </button>
+            <button type="button" class="btn btn-outline-secondary" id="tableViewBtn">
+                <i class="bi bi-list-ul"></i> Table
+            </button>
+        </div>
+    </div>
+
+    <!-- Cards View -->
+    <div id="cardsView">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
+            {% for job in jobs %}
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-header d-flex justify-content-between align-items-center bg-{{ 'success' if job.status == 'Completed' else 'warning' if job.status == 'Pending' else 'info' }} text-white">
+                        <h5 class="card-title mb-0">{{ job.title }}</h5>
+                        <span class="badge bg-white text-dark">{{ job.id }}</span>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">{{ job.description|truncate(100) }}</p>
+                        <ul class="list-group list-group-flush mb-3">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span><i class="bi bi-geo-alt"></i> Location:</span>
+                                <span class="fw-bold">{{ job.location }}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span><i class="bi bi-person"></i> Customer:</span>
+                                <span class="fw-bold">{{ job.customer_name }}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span><i class="bi bi-telephone"></i> Contact:</span>
+                                <span class="fw-bold">{{ job.customer_contact }}</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                <i class="bi bi-calendar"></i> {{ job.created_at.strftime('%b %d, %Y') }}
+                            </small>
+                            <div class="btn-group">
+                                <a href="{{ url_for('main.job_detail', job_id=job.id) }}" class="btn btn-sm btn-outline-primary" title="View">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a href="{{ url_for('main.edit_job', job_id=job.id) }}" class="btn btn-sm btn-outline-secondary" title="Edit">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <button class="btn btn-sm btn-outline-danger" title="Delete" data-bs-toggle="modal" data-bs-target="#deleteModal{{ job.id }}">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Delete Confirmation Modal -->
+            <div class="modal fade" id="deleteModal{{ job.id }}" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Confirm Delete</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you sure you want to delete job #{{ job.id }} - {{ job.title }}?</p>
+                            <p class="text-danger"><small>This action cannot be undone.</small></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <form action="{{ url_for('main.delete_job', job_id=job.id) }}" method="POST">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="col-12">
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle"></i> No jobs found. Create your first job by clicking the "New Job" button.
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Table View (Hidden by default) -->
+    <div id="tableView" class="d-none">
+        <div class="card shadow">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Job ID</th>
+                                <th>Title</th>
+                                <th>Customer</th>
+                                <th>Location</th>
+                                <th>Status</th>
+                                <th>Created</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for job in jobs %}
+                            <tr>
+                                <td>#{{ job.id }}</td>
+                                <td>{{ job.title }}</td>
+                                <td>{{ job.customer_name }}</td>
+                                <td>{{ job.location }}</td>
+                                <td>
+                                    <span class="badge bg-{{ 'success' if job.status == 'Completed' else 'warning' if job.status == 'Pending' else 'info' }}">
+                                        {{ job.status }}
+                                    </span>
+                                </td>
+                                <td>{{ job.created_at.strftime('%m/%d/%Y') }}</td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="{{ url_for('main.job_detail', job_id=job.id) }}" class="btn btn-outline-primary" title="View">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        <a href="{{ url_for('main.edit_job', job_id=job.id) }}" class="btn btn-outline-secondary" title="Edit">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <button class="btn btn-outline-danger" title="Delete" data-bs-toggle="modal" data-bs-target="#deleteModal{{ job.id }}">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    <nav class="mt-4">
+        <ul class="pagination justify-content-center">
+            <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1">Previous</a>
+            </li>
+            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#">Next</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// View toggle functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const cardViewBtn = document.getElementById('cardViewBtn');
+    const tableViewBtn = document.getElementById('tableViewBtn');
+    const cardsView = document.getElementById('cardsView');
+    const tableView = document.getElementById('tableView');
+
+    cardViewBtn.addEventListener('click', function() {
+        cardsView.classList.remove('d-none');
+        tableView.classList.add('d-none');
+        cardViewBtn.classList.add('active');
+        tableViewBtn.classList.remove('active');
+    });
+
+    tableViewBtn.addEventListener('click', function() {
+        cardsView.classList.add('d-none');
+        tableView.classList.remove('d-none');
+        cardViewBtn.classList.remove('active');
+        tableViewBtn.classList.add('active');
+    });
+});
+</script>
+{% endblock %}

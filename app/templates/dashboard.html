@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <h2>Your Jobs</h2>
+        <div class="list-group">
+            {% for job in jobs %}
+            <a href="#" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{ job.title }}</h5>
+                    <small class="text-muted">{{ job.status }}</small>
+                </div>
+                <p class="mb-1">{{ job.description }}</p>
+                <small class="text-muted">{{ job.location }} - {{ job.customer_name }}</small>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Quick Actions</h5>
+                <a href="{{ url_for('main.jobs') }}" class="btn btn-primary mb-2">Create New Job</a>
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <h6>Stats</h6>
+                        <p>Total Jobs: {{ jobs|length }}</p>
+                        <p>Pending: {{ jobs|selectattr('status', 'equalto', 'Pending')|list|length }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

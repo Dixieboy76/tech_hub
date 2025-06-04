@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+
+{% block title %}Jobs Management{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Tabs Navigation -->
+    <ul class="nav nav-tabs mb-4" id="jobsTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="view-tab" data-bs-toggle="tab" data-bs-target="#view-jobs" type="button">
+                <i class="bi bi-list-ul"></i> View Jobs
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="create-tab" data-bs-toggle="tab" data-bs-target="#create-job" type="button">
+                <i class="bi bi-plus-circle"></i> Create Job
+            </button>
+        </li>
+    </ul>
+
+    <!-- Tabs Content -->
+    <div class="tab-content" id="jobsTabsContent">
+        <!-- View Jobs Tab -->
+        <div class="tab-pane fade show active" id="view-jobs" role="tabpanel">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2>Your Service Jobs</h2>
+                <div class="btn-group">
+                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <i class="bi bi-filter"></i> Filter
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="#">All Jobs</a></li>
+                        <li><a class="dropdown-item" href="#">Pending</a></li>
+                        <li><a class="dropdown-item" href="#">In Progress</a></li>
+                        <li><a class="dropdown-item" href="#">Completed</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            {% if jobs %}
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Job ID</th>
+                            <th>Title</th>
+                            <th>Customer</th>
+                            <th>Location</th>
+                            <th>Status</th>
+                            <th>Created</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for job in jobs %}
+                        <tr>
+                            <td>#{{ job.id }}</td>
+                            <td>{{ job.title }}</td>
+                            <td>{{ job.customer_name }}</td>
+                            <td>{{ job.location }}</td>
+                            <td>
+                                <span class="badge rounded-pill bg-{{ 'success' if job.status == 'Completed' else 'warning' if job.status == 'Pending' else 'info' }}">
+                                    {{ job.status }}
+                                </span>
+                            </td>
+                            <td>{{ job.created_at.strftime('%m/%d/%Y') }}</td>
+                            <td>
+                                <div class="btn-group btn-group-sm">
+                                    <a href="{{ url_for('main.job_detail', job_id=job.id) }}" class="btn btn-outline-primary" title="View">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <a href="{{ url_for('main.edit_job', job_id=job.id) }}" class="btn btn-outline-secondary" title="Edit">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <button class="btn btn-outline-danger" title="Delete" data-bs-toggle="modal" data-bs-target="#deleteModal{{ job.id }}">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                                
+                                <!-- Delete Confirmation Modal -->
+                                <div class="modal fade" id="deleteModal{{ job.id }}" tabindex="-1">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Confirm Delete</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Are you sure you want to delete job #{{ job.id }} - {{ job.title }}?</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                <form action="{{ url_for('main.delete_job', job_id=job.id) }}" method="POST">
+                                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                
+                <!-- Pagination -->
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1">Previous</a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            {% else %}
+            <div class="alert alert-info">
+                <i class="bi bi-info-circle"></i> No jobs found. Create your first job using the "Create Job" tab.
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Create Job Tab -->
+        <div class="tab-pane fade" id="create-job" role="tabpanel">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title mb-4">Create New Service Job</h3>
+                    <form method="POST" action="{{ url_for('main.jobs') }}">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    {{ form.title(class="form-control", placeholder="Job title") }}
+                                    {{ form.title.label(class="form-label") }}
+                                    {% if form.title.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.title.errors[0] }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    {{ form.location(class="form-control", placeholder="Location") }}
+                                    {{ form.location.label(class="form-label") }}
+                                    {% if form.location.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.location.errors[0] }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="col-12">
+                                <div class="form-floating mb-3">
+                                    {{ form.description(class="form-control", placeholder="Description", style="height: 120px") }}
+                                    {{ form.description.label(class="form-label") }}
+                                    {% if form.description.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.description.errors[0] }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    {{ form.customer_name(class="form-control", placeholder="Customer name") }}
+                                    {{ form.customer_name.label(class="form-label") }}
+                                    {% if form.customer_name.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.customer_name.errors[0] }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    {{ form.customer_contact(class="form-control", placeholder="Customer contact") }}
+                                    {{ form.customer_contact.label(class="form-label") }}
+                                    {% if form.customer_contact.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.customer_contact.errors[0] }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="col-12">
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary btn-lg">
+                                        <i class="bi bi-save"></i> Create Job
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

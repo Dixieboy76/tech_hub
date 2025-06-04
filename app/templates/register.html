@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <h2 class="card-title">Create Your Account</h2>
+                        <p class="text-muted">Join Tech Hub to manage service jobs</p>
+                    </div>
+                    
+                    <form method="POST" action="{{ url_for('auth.register') }}">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    {{ form.username(class="form-control", placeholder="Username") }}
+                                    {{ form.username.label(class="form-label") }}
+                                    {% if form.username.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.username.errors[0] }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    {{ form.email(class="form-control", placeholder="Email") }}
+                                    {{ form.email.label(class="form-label") }}
+                                    {% if form.email.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.email.errors[0] }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    {{ form.password(class="form-control", placeholder="Password") }}
+                                    {{ form.password.label(class="form-label") }}
+                                    {% if form.password.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.password.errors[0] }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    {{ form.confirm_password(class="form-control", placeholder="Confirm Password") }}
+                                    {{ form.confirm_password.label(class="form-label") }}
+                                    {% if form.confirm_password.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.confirm_password.errors[0] }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="col-12">
+                                <div class="form-check mb-4">
+                                    {{ form.is_tech(class="form-check-input") }}
+                                    {{ form.is_tech.label(class="form-check-label") }}
+                                    <small class="form-text text-muted d-block">
+                                        Check this if you're a technician/service provider
+                                    </small>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12">
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary btn-lg">
+                                        <i class="bi bi-person-plus"></i> Register
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12 text-center mt-3">
+                                <p class="mb-0">
+                                    Already have an account? 
+                                    <a href="{{ url_for('auth.login') }}">Login here</a>
+                                </p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

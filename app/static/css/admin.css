@@ -1,0 +1,34 @@
+/* Admin Dashboard Styles */
+.admin-dashboard {
+    padding: 20px;
+}
+
+.admin-header {
+    background-color: #f8f9fa;
+    border-left: 4px solid #0d6efd;
+}
+
+.admin-dashboard .card {
+    border: none;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    transition: transform 0.2s;
+}
+
+.admin-dashboard .card:hover {
+    transform: translateY(-5px);
+}
+
+.admin-dashboard .display-5 {
+    font-size: 2.5rem;
+    margin: 15px 0;
+    color: #0d6efd;
+}
+
+/* Override Flask-Admin styles */
+.navbar-brand {
+    padding: 0.5rem 1rem;
+}
+
+.admin-menu .nav-item {
+    margin-bottom: 5px;
+}

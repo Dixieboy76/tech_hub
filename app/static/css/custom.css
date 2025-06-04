@@ -1,0 +1,135 @@
+/* Custom styles for Tech Hub */
+body {
+    background-color: #f8f9fa;
+}
+
+.card {
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.navbar-brand {
+    font-weight: 700;
+}
+
+/* Status badges */
+.badge-pending {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.badge-in-progress {
+    background-color: #0dcaf0;
+    color: #212529;
+}
+
+.badge-completed {
+    background-color: #198754;
+}
+
+/* Job card status indicators */
+.card-header.pending {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.card-header.in-progress {
+    background-color: #d1ecf1;
+    color: #0c5460;
+}
+
+.card-header.completed {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+/* Custom styles for jobs listing */
+.icon-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.bg-primary-light {
+    background-color: rgba(13, 110, 253, 0.1);
+}
+
+.bg-warning-light {
+    background-color: rgba(255, 193, 7, 0.1);
+}
+
+.bg-info-light {
+    background-color: rgba(13, 202, 240, 0.1);
+}
+
+.bg-success-light {
+    background-color: rgba(25, 135, 84, 0.1);
+}
+
+.card-header {
+    font-weight: 600;
+}
+
+/* Custom styles for index page */
+.hero {
+    background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+}
+
+.icon-circle {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.feature-card {
+    transition: transform 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+.testimonial-img {
+    object-fit: cover;
+}
+
+section {
+    padding: 5rem 0;
+}
+
+/* Profile page specific styles */
+.profile-img {
+    object-fit: cover;
+    border: 3px solid #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.profile-stats {
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    padding: 1rem 0;
+    margin: 1rem 0;
+}
+
+.account-type-badge {
+    font-size: 0.9rem;
+    padding: 0.35em 0.65em;
+}
+
+.footer {
+    position: fixed; /* Fixed so it stays at the bottom */
+    bottom: 0;
+    width: 100%;
+    height: 2.5rem;
+    margin-top: auto;
+}

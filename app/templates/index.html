@@ -1,0 +1,249 @@
+{% extends "base.html" %}
+
+{% block title %}Tech Hub - Service Technician Portal{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero bg-primary text-white py-5">
+    <div class="container py-4">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">Streamline Your Service Business</h1>
+                <p class="lead mb-4">Tech Hub helps service technicians manage jobs, customers, and schedules in one powerful platform.</p>
+                <div class="d-flex gap-3">
+                    {% if current_user.is_authenticated %}
+                        <a href="{{ url_for('main.dashboard') }}" class="btn btn-light btn-lg px-4">
+                            <i class="bi bi-speedometer2"></i> Go to Dashboard
+                        </a>
+                    {% else %}
+                        <a href="{{ url_for('auth.register') }}" class="btn btn-light btn-lg px-4">
+                            <i class="bi bi-person-plus"></i> Sign Up Free
+                        </a>
+                        <a href="{{ url_for('auth.login') }}" class="btn btn-outline-light btn-lg px-4">
+                            <i class="bi bi-box-arrow-in-right"></i> Login
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-6 d-none d-lg-block">
+                <img src="{{ url_for('static', filename='images/tech-hero2.png') }}" alt="Technician working" class="img-fluid rounded-3 shadow">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5 bg-light">
+    <div class="container py-4">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Powerful Features for Service Professionals</h2>
+            <p class="lead text-muted">Everything you need to run your service business efficiently</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="icon-circle bg-primary text-white mx-auto mb-3">
+                            <i class="bi bi-clipboard2-check fs-3"></i>
+                        </div>
+                        <h3 class="h5">Job Management</h3>
+                        <p class="text-muted">Create, track, and complete service jobs with ease. Get real-time updates on all your assignments.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="icon-circle bg-success text-white mx-auto mb-3">
+                            <i class="bi bi-calendar-check fs-3"></i>
+                        </div>
+                        <h3 class="h5">Scheduling</h3>
+                        <p class="text-muted">Optimize your route and schedule with our intelligent calendar and mapping tools.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="icon-circle bg-info text-white mx-auto mb-3">
+                            <i class="bi bi-people fs-3"></i>
+                        </div>
+                        <h3 class="h5">Customer Portal</h3>
+                        <p class="text-muted">Maintain customer history, notes, and service records all in one place.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="py-5">
+    <div class="container py-4">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">How Tech Hub Works</h2>
+            <p class="lead text-muted">Get started in just a few simple steps</p>
+        </div>
+        
+        <div class="row g-4 align-items-center">
+            <div class="col-lg-6">
+                <div class="d-flex mb-4">
+                    <div class="flex-shrink-0">
+                        <span class="badge bg-primary rounded-circle fs-4 me-3" style="width: 50px; height: 50px; line-height: 50px;">1</span>
+                    </div>
+                    <div>
+                        <h3 class="h4">Create Your Account</h3>
+                        <p class="text-muted mb-0">Sign up as a technician or service manager in just 2 minutes.</p>
+                    </div>
+                </div>
+                
+                <div class="d-flex mb-4">
+                    <div class="flex-shrink-0">
+                        <span class="badge bg-primary rounded-circle fs-4 me-3" style="width: 50px; height: 50px; line-height: 50px;">2</span>
+                    </div>
+                    <div>
+                        <h3 class="h4">Add Your Jobs</h3>
+                        <p class="text-muted mb-0">Create service tickets with customer details, locations, and requirements.</p>
+                    </div>
+                </div>
+                
+                <div class="d-flex">
+                    <div class="flex-shrink-0">
+                        <span class="badge bg-primary rounded-circle fs-4 me-3" style="width: 50px; height: 50px; line-height: 50px;">3</span>
+                    </div>
+                    <div>
+                        <h3 class="h4">Manage & Complete</h3>
+                        <p class="text-muted mb-0">Track job progress, update statuses, and generate reports.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="border rounded-3 p-3 shadow-sm">
+                    <img src="{{ url_for('static', filename='images/app-screenshot.png') }}" alt="Tech Hub dashboard" class="img-fluid rounded-2">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="py-5 bg-light">
+    <div class="container py-4">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Trusted by Service Professionals</h2>
+            <p class="lead text-muted">What our users say about Tech Hub</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="d-flex mb-3">
+                            <i class="bi bi-quote fs-1 text-muted opacity-25"></i>
+                        </div>
+                        <p class="mb-4">"Tech Hub has cut my admin time in half. I can now focus on the actual service work instead of paperwork."</p>
+                        <div class="d-flex align-items-center">
+                            <img src="{{ url_for('static', filename='images/avatar1.jpg') }}" class="rounded-circle me-3" width="50" height="50" alt="John Smith">
+                            <div>
+                                <h6 class="mb-0">John Smith</h6>
+                                <small class="text-muted">HVAC Technician</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="d-flex mb-3">
+                            <i class="bi bi-quote fs-1 text-muted opacity-25"></i>
+                        </div>
+                        <p class="mb-4">"The mobile-friendly interface means I can update job statuses right from the field. Game changer!"</p>
+                        <div class="d-flex align-items-center">
+                            <img src="{{ url_for('static', filename='images/avatar2.jpg') }}" class="rounded-circle me-3" width="50" height="50" alt="Sarah Johnson">
+                            <div>
+                                <h6 class="mb-0">Sarah Johnson</h6>
+                                <small class="text-muted">Electrician</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="d-flex mb-3">
+                            <i class="bi bi-quote fs-1 text-muted opacity-25"></i>
+                        </div>
+                        <p class="mb-4">"Managing my team of technicians has never been easier. The dashboard gives me instant visibility."</p>
+                        <div class="d-flex align-items-center">
+                            <img src="{{ url_for('static', filename='images/avatar3.jpg') }}" class="rounded-circle me-3" width="50" height="50" alt="Mike Rodriguez">
+                            <div>
+                                <h6 class="mb-0">Mike Rodriguez</h6>
+                                <small class="text-muted">Service Manager</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="py-5 bg-primary text-white">
+    <div class="container py-4 text-center">
+        <h2 class="display-5 fw-bold mb-4">Ready to Transform Your Service Business?</h2>
+        <p class="lead mb-5">Join thousands of service professionals who trust Tech Hub to manage their operations.</p>
+        {% if current_user.is_authenticated %}
+            <a href="{{ url_for('main.dashboard') }}" class="btn btn-light btn-lg px-5">
+                <i class="bi bi-speedometer2"></i> Go to Dashboard
+            </a>
+        {% else %}
+            <a href="{{ url_for('auth.register') }}" class="btn btn-light btn-lg px-5 me-3">
+                <i class="bi bi-person-plus"></i> Sign Up Free
+            </a>
+            <a href="{{ url_for('auth.login') }}" class="btn btn-outline-light btn-lg px-5">
+                <i class="bi bi-box-arrow-in-right"></i> Login
+            </a>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+
+{% block styles %}
+<style>
+    .hero {
+        background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+    }
+    
+    .icon-circle {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-5px);
+        transition: transform 0.3s ease;
+    }
+    
+    .testimonial-img {
+        object-fit: cover;
+    }
+    
+    section {
+        padding: 5rem 0;
+    }
+</style>
+{% endblock %}
