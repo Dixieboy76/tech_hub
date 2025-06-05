@@ -10,6 +10,10 @@ class User(db.Model, UserMixin):
     is_tech = db.Column(db.Boolean, default=False)
     is_admin = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
+    reset_token = db.Column(db.String(100))
+    reset_token_expiration = db.Column(db.DateTime)
+    email_verified = db.Column(db.Boolean, default=False)
+    verification_token = db.Column(db.String(100))
     
     jobs = db.relationship('Job', backref='technician', lazy=True)
 

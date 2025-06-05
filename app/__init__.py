@@ -1,35 +1,5 @@
-"""
-Key Points:
-Password Handling:
-
-password property setter automatically hashes passwords
-
-Both check_password() and verify_password() work
-
-Never stores plain text passwords
-
-Security:
-
-Uses Werkzeug's secure password hashing
-
-Proper user authentication flow
-
-Admin protection through is_admin flag
-
-Consistency:
-
-All password-related methods are properly implemented
-
-The login route uses check_password()
-
-Alternative verify_password() available if needed
-
-"""
-
-
-
 from flask import Flask
-from .extensions import db, login_manager
+from .extensions import db, login_manager, mail
 
 def create_app():
     app = Flask(__name__)
@@ -38,6 +8,7 @@ def create_app():
     # Initialize extensions
     db.init_app(app)
     login_manager.init_app(app)
+    mail.init_app(app)  # Initialize Flask-Mail
     
     # Setup login manager
     from .models import User
